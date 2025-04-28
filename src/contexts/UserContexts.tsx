@@ -1,5 +1,5 @@
 // src/contexts/UserContext.tsx
-
+"use client";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 // Define a type for the user object
@@ -18,7 +18,9 @@ const UserContext = createContext<{
 });
 
 // Create the UserProvider component to manage the user state
-export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const UserProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null); // User state
 
   return (
@@ -30,4 +32,3 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
 // Custom hook to access user context
 export const useUser = () => useContext(UserContext);
-

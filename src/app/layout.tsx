@@ -1,7 +1,7 @@
 // src/app/layout.tsx
 
 import Navbar from "@/components/navbar";
-import { UserProvider } from "@/contexts/UserContext";  // Import UserProvider
+import { UserProvider } from "@/contexts/UserContexts"; // Correct the import to match the alias
 import "@/styles/globals.css";
 import "@/styles/layout.css";
 
@@ -16,7 +16,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body>
-        <UserProvider> {/* Wrap with UserProvider */}
+        <UserProvider>
+          {/* Wrap with UserProvider */}
           <Navbar />
           <main className="container mx-auto p-4">{children}</main>
         </UserProvider>
@@ -26,4 +27,3 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default Layout;
-

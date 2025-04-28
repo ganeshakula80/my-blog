@@ -1,5 +1,5 @@
 // src/app/userdetails/page.tsx
-
+"use client";
 import { useState } from "react";
 
 const UserDetails = () => {
@@ -31,15 +31,21 @@ const UserDetails = () => {
           <h2 className="text-2xl font-semibold">{user.name}</h2>
           <p className="mt-2 text-gray-600">Bio: {user.bio}</p>
           <div className="mt-4">
-            <p><strong>Posts:</strong> {user.posts}</p>
-            <p><strong>Followers:</strong> {user.followers}</p>
+            <p>
+              <strong>Posts:</strong> {user.posts}
+            </p>
+            <p>
+              <strong>Followers:</strong> {user.followers}
+            </p>
           </div>
         </div>
       </div>
 
       {/* Edit Profile Button (for future feature implementation) */}
       <div className="mt-8">
-        <button className="bg-blue-500 text-white p-2 rounded-lg">Edit Profile</button>
+        <button className="bg-blue-500 text-white p-2 rounded-lg">
+          Edit Profile
+        </button>
       </div>
     </div>
   );

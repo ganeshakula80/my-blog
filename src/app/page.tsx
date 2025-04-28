@@ -1,4 +1,5 @@
 // src/app/page.tsx
+"use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -22,15 +23,21 @@ const Home = () => {
               <div className="flex items-center">
                 {/* Profile Picture */}
                 <img
-                  src={blog.userProfilePicture || "/path/to/default-profile.jpg"} // Profile picture (fallback if not available)
+                  src={
+                    blog.userProfilePicture || "/path/to/default-profile.jpg"
+                  } // Profile picture (fallback if not available)
                   alt="Profile Picture"
                   className="w-12 h-12 rounded-full mr-4"
                 />
                 <div>
                   {/* User Name */}
-                  <span className="font-semibold">{blog.username || "Anonymous"}</span>
+                  <span className="font-semibold">
+                    {blog.username || "Anonymous"}
+                  </span>
                   {/* Post Date */}
-                  <p className="text-gray-500 text-sm">Posted on {new Date(blog.createdAt).toLocaleDateString()}</p>
+                  <p className="text-gray-500 text-sm">
+                    Posted on {new Date(blog.createdAt).toLocaleDateString()}
+                  </p>
                 </div>
               </div>
 
@@ -50,5 +57,3 @@ const Home = () => {
 };
 
 export default Home;
-
-

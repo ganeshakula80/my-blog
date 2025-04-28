@@ -1,6 +1,7 @@
 // src/app/create/page.tsx
+"use client";
 import { useState } from "react";
-import { useUser } from "@/contexts/UserContext";
+import { useUser } from "@/contexts/UserContexts";
 import { useRouter } from "next/navigation"; // Import the router to handle redirects
 
 const CreateBlog = () => {
