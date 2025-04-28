@@ -18,8 +18,9 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".", // Add baseUrl for better resolution of relative imports
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"] // This should point to the 'src' folder in your project
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

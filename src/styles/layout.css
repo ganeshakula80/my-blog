@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+/* Example of custom CSS that is not available in Tailwind */
+
+/* Example: Apply a global font family */
+body {
+  font-family: "Arial", sans-serif;
+}
+
+/* You can also add custom classes for layout styles */
+.custom-class {
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 5px;
+}
