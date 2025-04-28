@@ -1,7 +1,6 @@
 // src/app/page.tsx
 
 import Link from "next/link";
-import BlogDetails from "@/app/blog/[id]/page";
 
 const Home = () => {
   const blogs = [
@@ -25,8 +24,21 @@ const Home = () => {
           ))}
         </ul>
       </div>
+
+      <div className="mt-8">
+        <h2 className="text-2xl">Login / Register</h2>
+        <div className="space-x-4">
+          <Link href="/login">
+            <span className="text-blue-500">Login</span>
+          </Link>
+          <Link href="/register">
+            <span className="text-blue-500">Register</span>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default Home;
+
