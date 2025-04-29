@@ -1,32 +1,51 @@
-// src/app/create/page.tsx
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useUser } from "@/contexts/UserContexts";
-import { useRouter } from "next/navigation"; // Import the router to handle redirects
 
 const CreateBlog = () => {
-  const { user } = useUser(); // Get the user data from context
-  const router = useRouter(); // Router to handle redirection after successful form submission
+  const { user } = useUser();
+  const router = useRouter();
+  const [form, setForm] = useState({ title: "", content: "" });
+  const [loading, setLoading] = useState(false);
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Handle blog creation logic here (you may need backend integration)
-    // For now, we will just log the data
-    console.log({ title, content });
-
-    // Redirect to homepage after submission (or a blog detail page)
-    router.push("/");
+    if (!user) {
+      alert("Please log in to create a blog.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch("http://localhost:5000/api/blogs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to create blog");
+      alert("Blog created!");
+      router.push(`/blog/${data.blog._id}`);
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Create a New Blog</h1>
-
-      {/* Display User Information */}
       {user ? (
         <div className="flex items-center space-x-4 mb-6">
           <img
@@ -41,8 +60,6 @@ const CreateBlog = () => {
       ) : (
         <p className="text-gray-500">Please log in to create a blog.</p>
       )}
-
-      {/* Blog Creation Form */}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="title" className="block mb-2">
@@ -53,8 +70,8 @@ const CreateBlog = () => {
             id="title"
             name="title"
             className="p-2 border border-gray-300 rounded w-full"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={form.title}
+            onChange={handleChange}
             required
           />
         </div>
@@ -67,16 +84,17 @@ const CreateBlog = () => {
             name="content"
             className="p-2 border border-gray-300 rounded w-full"
             rows={4}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            value={form.content}
+            onChange={handleChange}
             required
           />
         </div>
         <button
           type="submit"
           className="mt-4 bg-blue-500 text-white p-2 rounded"
+          disabled={loading}
         >
-          Create Blog
+          {loading ? "Creating..." : "Create Blog"}
         </button>
       </form>
     </div>

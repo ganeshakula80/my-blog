@@ -1,11 +1,24 @@
-// src/contexts/UserContext.tsx
+// src/contexts/UserContexts.tsx
 "use client";
-import React, { createContext, useContext, useState, ReactNode } from "react";
+
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 // Define a type for the user object
 interface User {
-  username: string;
-  profilePicture: string;
+  id: string; // or _id, depending on backend, but use id for consistency
+  name: string;
+  email: string;
+  profilePic?: string;
+  noOfPosts?: number;
+  followers?: number;
+  bio?: string;
+  // Add any other fields you use
 }
 
 // Create the context
@@ -22,6 +35,40 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [user, setUser] = useState<User | null>(null); // User state
+
+  // Persist user to localStorage on login
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    }
+    // Do NOT remove user from localStorage when user is null (prevents clearing on refresh)
+  }, [user]);
+
+  // Rehydrate user from localStorage and token on mount
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    } else if (token) {
+      fetch("http://localhost:5000/api/auth/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && data.id) {
+            setUser(data);
+            localStorage.setItem("user", JSON.stringify(data));
+          }
+        })
+        .catch((err) => {
+          console.error("Error fetching user", err);
+          localStorage.removeItem("token");
+        });
+    }
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
