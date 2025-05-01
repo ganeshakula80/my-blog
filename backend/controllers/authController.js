@@ -1,7 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const jwt = require("jsonwebtoken");
 
 // Example: Generate JWT after successful login/signup
 const generateToken = (user) => {

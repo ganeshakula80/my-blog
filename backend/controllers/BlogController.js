@@ -1,4 +1,5 @@
 const Blog = require("../models/Blog");
+const jwt = require("jsonwebtoken");
 
 exports.createBlog = async (req, res) => {
   const { title, content } = req.body;
@@ -38,6 +39,32 @@ exports.getAllBlogs = async (req, res) => {
     const blogs = await Blog.find().populate("author", "name profilePic");
     res.json({ blogs });
   } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+exports.deleteBlog = async (req, res) => {
+  try {
+    const blogId = req.params.id;
+    const userId = req.user.id; // from authMiddleware
+
+    const blog = await Blog.findById(blogId);
+
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    if (blog.author.toString() !== userId) {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to delete this blog" });
+    }
+
+    await blog.deleteOne();
+
+    res.status(200).json({ message: "Blog deleted successfully" });
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };

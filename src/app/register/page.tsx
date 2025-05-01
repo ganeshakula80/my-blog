@@ -22,6 +22,8 @@ const Register = () => {
         form
       );
       alert("Registration successful! Please login.");
+      sessionStorage.setItem("token", res.data.token);
+      sessionStorage.setItem("user", JSON.stringify(res.data.user));
       router.push("/login");
     } catch (err: any) {
       alert(err.response?.data?.message || "Registration failed");

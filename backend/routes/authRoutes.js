@@ -1,9 +1,8 @@
 const express = require("express");
 const { register, login } = require("../controllers/authController");
+const jwt = require("jsonwebtoken");
 
 const router = express.Router();
-
-const jwt = require("jsonwebtoken");
 
 router.get("/me", (req, res) => {
   const authHeader = req.headers.authorization;
