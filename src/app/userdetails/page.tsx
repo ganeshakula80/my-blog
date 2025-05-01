@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useUser } from "@/contexts/UserContexts";
 import axios from "axios";
-import Image from "next/image";
 
 type UserDetails = {
   _id: string;
@@ -85,6 +84,8 @@ const UserDetails = () => {
             src={form.profilePic}
             alt="Profile"
             className="w-32 h-32 rounded-full border-2 border-blue-500"
+            width={128}
+            height={128}
           />
         </div>
         <div className="flex-1">
