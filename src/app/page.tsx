@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 
 type Blog = {
   _id: string;
@@ -134,6 +133,8 @@ const Home = () => {
                     }
                     alt="Profile Picture"
                     className="w-12 h-12 rounded-full mr-4"
+                    width={48}
+                    height={48}
                   />
                   <div>
                     <span className="font-semibold">
