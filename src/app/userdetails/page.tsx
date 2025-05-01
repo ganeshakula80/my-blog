@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useUser } from "@/contexts/UserContexts";
 import axios from "axios";
+import Image from "next/image";
 
 type UserDetails = {
   _id: string;

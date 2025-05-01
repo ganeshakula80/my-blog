@@ -39,6 +39,45 @@ const Home = () => {
     }
   }, []);
 
+  // const handleDelete = async (postId: string) => {
+  //   try {
+  //     const token = sessionStorage.getItem("token");
+  //     if (!token) {
+  //       alert("You must be logged in to delete posts.");
+  //       return;
+  //     }
+
+  //     const res = await fetch(
+  //       `http://localhost:5000/api/blogs/delete/${postId}`, // Corrected URL format
+
+  //       {
+  //         method: "DELETE",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+
+  //     // Log the response status
+  //     console.log("Response status:", res.status);
+
+  //     if (!res.ok) {
+  //       // If response is not ok, log the text response for further investigation
+  //       const errorText = await res.text();
+  //       console.log("Error text:", errorText);
+  //       throw new Error("Failed to delete post");
+  //     }
+
+  //     // Assuming response is JSON if status is ok
+  //     const data = await res.json();
+  //     alert("Post deleted successfully");
+  //     setBlogs((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+  //   } catch (err) {
+  //     console.error("Error in handleDelete:", err);
+  //     alert("Error deleting post");
+  //   }
+  // };
+
   const handleDelete = async (postId: string) => {
     try {
       const token = sessionStorage.getItem("token");
@@ -49,7 +88,6 @@ const Home = () => {
 
       const res = await fetch(
         `http://localhost:5000/api/blogs/delete/${postId}`, // Corrected URL format
-
         {
           method: "DELETE",
           headers: {
@@ -68,8 +106,7 @@ const Home = () => {
         throw new Error("Failed to delete post");
       }
 
-      // Assuming response is JSON if status is ok
-      const data = await res.json();
+      // Post deleted successfully, update state
       alert("Post deleted successfully");
       setBlogs((prevPosts) => prevPosts.filter((post) => post._id !== postId));
     } catch (err) {
