@@ -63,10 +63,6 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-interface BlogDetailProps {
-  params: { id: string };
-}
-
 interface Author {
   name?: string;
   profilePic?: string;
