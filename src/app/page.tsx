@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 type Blog = {
   _id: string;
@@ -127,7 +128,7 @@ const Home = () => {
             {blogs.map((blog) => (
               <li key={blog._id} className="mt-4 border-b pb-4">
                 <div className="flex items-center">
-                  <img
+                  <Image
                     src={
                       blog.author?.profilePic || "/path/to/default-profile.jpg"
                     }
