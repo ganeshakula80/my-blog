@@ -25,8 +25,12 @@ const Register = () => {
       sessionStorage.setItem("token", res.data.token);
       sessionStorage.setItem("user", JSON.stringify(res.data.user));
       router.push("/login");
-    } catch (err: any) {
-      alert(err.response?.data?.message || "Registration failed");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert("An unknown error occurred.");
+      }
     } finally {
       setLoading(false);
     }

@@ -2,15 +2,28 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+type Blog = {
+  _id: string;
+  title: string;
+  content: string;
+  author: {
+    name: string;
+    profilePic: string;
+    _id: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+};
+
 const Home = () => {
-  const [blogs, setBlogs] = useState<any[]>([]);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/blogs")
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: { blogs: Blog[] }) => {
         setBlogs(data.blogs || []);
         setLoading(false);
       })

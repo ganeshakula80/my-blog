@@ -3,9 +3,18 @@ import { useEffect, useState } from "react";
 import { useUser } from "@/contexts/UserContexts";
 import axios from "axios";
 
+type UserDetails = {
+  _id: string;
+  name: string;
+  bio: string;
+  profilePic: string;
+  noOfPosts: number;
+  followers: number;
+};
+
 const UserDetails = () => {
   const { user } = useUser();
-  const [details, setDetails] = useState<any>(null);
+  const [details, setDetails] = useState<UserDetails | null>(null);
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({
     name: "",
