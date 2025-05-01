@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/contexts/UserContexts";
+import Image from "next/image";
 
 const CreateBlog = () => {
   const { user } = useUser();
@@ -21,6 +22,7 @@ const CreateBlog = () => {
       alert("Please log in to create a blog.");
       return;
     }
+
     setLoading(true);
     try {
       const token = sessionStorage.getItem("token");
@@ -36,8 +38,12 @@ const CreateBlog = () => {
       if (!res.ok) throw new Error(data.message || "Failed to create blog");
       alert("Blog created!");
       router.push(`/blog/${data.blog._id}`);
-    } catch (err: any) {
-      alert(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert("An unknown error occurred.");
+      }
     } finally {
       setLoading(false);
     }
@@ -46,20 +52,22 @@ const CreateBlog = () => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Create a New Blog</h1>
+
       {user ? (
         <div className="flex items-center space-x-4 mb-6">
-          <img
-            src={user.profilePic}
+          <Image
+            src={user.profilePic || "/path/to/default-profile.jpg"}
             alt="User Profile"
-            className="w-12 h-12 rounded-full border-2 border-blue-500"
+            width={48}
+            height={48}
+            className="rounded-full border-2 border-blue-500"
           />
-          <div>
-            <p className="text-xl font-semibold">{user.name}</p>
-          </div>
+          <p className="text-xl font-semibold">{user.name}</p>
         </div>
       ) : (
         <p className="text-gray-500">Please log in to create a blog.</p>
       )}
+
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="title" className="block mb-2">
@@ -75,6 +83,7 @@ const CreateBlog = () => {
             required
           />
         </div>
+
         <div className="mt-4">
           <label htmlFor="content" className="block mb-2">
             Blog Content
@@ -83,15 +92,16 @@ const CreateBlog = () => {
             id="content"
             name="content"
             className="p-2 border border-gray-300 rounded w-full"
-            rows={4}
+            rows={6}
             value={form.content}
             onChange={handleChange}
             required
           />
         </div>
+
         <button
           type="submit"
-          className="mt-4 bg-blue-500 text-white p-2 rounded"
+          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-60"
           disabled={loading}
         >
           {loading ? "Creating..." : "Create Blog"}

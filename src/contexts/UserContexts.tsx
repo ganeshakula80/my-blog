@@ -1,6 +1,11 @@
 // src/contexts/UserContexts.tsx
 "use client";
 
+interface User {
+  name: string;
+  profilePic?: string;
+}
+
 import React, {
   createContext,
   useContext,
