@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Blog = require("../models/Blog");
 
 const userSchema = new mongoose.Schema(
   {
@@ -7,7 +8,6 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     profilePic: { type: String, default: "/images/default-profile-pic.jpg" },
     bio: { type: String, default: "" },
-    followers: { type: Number, default: 0 },
     noOfPosts: { type: Number, default: 0 },
   },
   { timestamps: true }

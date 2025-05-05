@@ -1,4 +1,5 @@
 const Blog = require("../models/Blog");
+const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 
 exports.createBlog = async (req, res) => {
@@ -13,6 +14,9 @@ exports.createBlog = async (req, res) => {
       author: req.user.id,
     });
     await blog.save();
+    await User.findByIdAndUpdate(req.user.id, {
+      $inc: { noOfPosts: 1 },
+    });
 
     res.status(201).json({ message: "Blog created", blog });
   } catch (err) {
@@ -61,6 +65,14 @@ exports.deleteBlog = async (req, res) => {
     }
 
     await blog.deleteOne();
+    // Recalculate the number of posts by this user
+    const totalPosts = await Blog.countDocuments({ author: userId });
+
+    // Update user's noOfPosts field
+    await User.findByIdAndUpdate(userId, { noOfPosts: totalPosts });
+    {
+      message: "Post deleted and user post count updated";
+    }
 
     res.status(200).json({ message: "Blog deleted successfully" });
   } catch (err) {

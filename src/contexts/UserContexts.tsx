@@ -44,15 +44,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   // Persist user to localStorage on login
   useEffect(() => {
     if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
+      sessionStorage.setItem("user", JSON.stringify(user));
     }
     // Do NOT remove user from localStorage when user is null (prevents clearing on refresh)
   }, [user]);
 
   // Rehydrate user from localStorage and token on mount
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
+    const storedUser = sessionStorage.getItem("user");
+    const token = sessionStorage.getItem("token");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     } else if (token) {

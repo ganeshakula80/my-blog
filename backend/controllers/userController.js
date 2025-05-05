@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Blog = require("../models/Blog");
 
 // GET user details
 exports.getUserDetails = async (req, res) => {
