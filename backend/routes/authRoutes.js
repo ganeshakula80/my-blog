@@ -11,7 +11,6 @@ router.get("/me", (req, res) => {
   }
 
   const token = authHeader.split(" ")[1];
-
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -28,5 +27,4 @@ router.get("/me", (req, res) => {
 });
 router.post("/register", register);
 router.post("/login", login);
-
 module.exports = router;

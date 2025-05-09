@@ -23,6 +23,9 @@ const Navbar = () => {
           <Link href="/userdetails">
             <span className="text-white cursor-pointer">User Details</span>
           </Link>
+          <Link href="/usersearch">
+            <span className="text-white cursor-pointer">User Search</span>
+          </Link>
 
           {!user ? (
             <>

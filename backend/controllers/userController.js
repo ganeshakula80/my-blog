@@ -35,3 +35,19 @@ exports.updateUserDetails = async (req, res) => {
     res.status(500).json({ message: "Failed to update profile" });
   }
 };
+
+// GET /api/users/search?search=ram
+exports.searchUsers = async (req, res) => {
+  try {
+    const search = req.query.search || "";
+
+    const users = await User.find({
+      name: { $regex: search, $options: "i" }, // case-insensitive regex
+    }).select("name profilePic bio");
+
+    res.json({ users });
+  } catch (err) {
+    console.error("Search users error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};

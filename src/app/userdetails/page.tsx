@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useCallback } from "react"; 
+import { useEffect, useState, useCallback } from "react";
 import { useUser } from "@/contexts/UserContexts";
 import axios from "axios";
 
@@ -9,7 +9,7 @@ type UserDetails = {
   bio: string;
   profilePic: string;
   noOfPosts: number;
-  followers: number; 
+  followers: number;
 };
 
 const UserDetails = () => {
@@ -23,58 +23,57 @@ const UserDetails = () => {
     noOfPosts: 0,
     followers: 0,
   });
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchUserDetails = useCallback(async () => {
     if (!user || !user.id) {
-        setIsLoading(false); 
-        return;
+      setIsLoading(false);
+      return;
     }
-    setIsLoading(true); 
-    console.log("Fetching user details..."); 
+    setIsLoading(true);
+    console.log("Fetching user details...");
     try {
       const res = await axios.get(
         `http://localhost:5000/api/userdetails/${user.id}`
       );
       const userData = res.data.user || res.data;
       if (userData) {
-         setDetails(userData);
-         setForm({
-           name: userData.name || "",
-           bio: userData.bio || "",
-           profilePic: userData.profilePic || "",
-           noOfPosts: userData.noOfPosts || 0,
-           followers: userData.followers || 0, 
-         });
+        setDetails(userData);
+        setForm({
+          name: userData.name || "",
+          bio: userData.bio || "",
+          profilePic: userData.profilePic || "",
+          noOfPosts: userData.noOfPosts || 0,
+          followers: userData.followers || 0,
+        });
       } else {
-          console.error("User data not found in response:", res.data);
-          setDetails(null); 
+        console.error("User data not found in response:", res.data);
+        setDetails(null);
       }
-
     } catch (err) {
       console.error("Failed to fetch user details:", err);
-      setDetails(null); 
+      setDetails(null);
     } finally {
-        setIsLoading(false); 
+      setIsLoading(false);
     }
-  }, [user]); 
+  }, [user]);
 
   useEffect(() => {
     if (user && user.id) {
-      fetchUserDetails(); 
+      fetchUserDetails();
 
       window.addEventListener("focus", fetchUserDetails);
-      console.log("Focus listener added"); 
+      console.log("Focus listener added");
 
       return () => {
         window.removeEventListener("focus", fetchUserDetails);
-        console.log("Focus listener removed"); 
+        console.log("Focus listener removed");
       };
     } else {
-        setDetails(null);
-        setIsLoading(false);
+      setDetails(null);
+      setIsLoading(false);
     }
-  }, [user, fetchUserDetails]); 
+  }, [user, fetchUserDetails]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -92,15 +91,15 @@ const UserDetails = () => {
         `http://localhost:5000/api/userdetails/${user.id}`,
         { name: form.name, bio: form.bio, profilePic: form.profilePic }
       );
-       const updatedUserData = res.data.user || res.data;
-      setDetails(updatedUserData); 
-      setForm({ 
-          name: updatedUserData.name || "",
-          bio: updatedUserData.bio || "",
-          profilePic: updatedUserData.profilePic || "",
-          noOfPosts: updatedUserData.noOfPosts || 0, 
-          followers: updatedUserData.followers || 0,
-      })
+      const updatedUserData = res.data.user || res.data;
+      setDetails(updatedUserData);
+      setForm({
+        name: updatedUserData.name || "",
+        bio: updatedUserData.bio || "",
+        profilePic: updatedUserData.profilePic || "",
+        noOfPosts: updatedUserData.noOfPosts || 0,
+        followers: updatedUserData.followers || 0,
+      });
       setEditing(false);
       alert("Profile updated successfully!");
     } catch (err) {
@@ -109,9 +108,14 @@ const UserDetails = () => {
     }
   };
 
-  if (!user) return <div className="text-center p-4">Please login to view your details.</div>;
-  if (isLoading) return <div className="text-center p-4">Loading user details...</div>; 
-  if (!details) return <div className="text-center p-4">Could not load user details.</div>; 
+  if (!user)
+    return (
+      <div className="text-center p-4">Please login to view your details.</div>
+    );
+  if (isLoading)
+    return <div className="text-center p-4">Loading user details...</div>;
+  if (!details)
+    return <div className="text-center p-4">Could not load user details.</div>;
 
   return (
     <div className="container mx-auto p-4 max-w-2xl">
@@ -124,8 +128,8 @@ const UserDetails = () => {
             className="w-32 h-32 rounded-full border-4 border-gray-200 object-cover"
             width={128}
             height={128}
-            onError={(e) => { 
-              e.currentTarget.src = "/images/default-profile-pic.jpg"; 
+            onError={(e) => {
+              e.currentTarget.src = "/images/default-profile-pic.jpg";
             }}
           />
         </div>
@@ -156,33 +160,35 @@ const UserDetails = () => {
                 placeholder="Profile Picture URL"
               />
               <div className="flex justify-center sm:justify-start space-x-2">
-                 <button
-                    onClick={handleUpdate}
-                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition duration-150 ease-in-out"
-                 >
-                    Save Changes
-                 </button>
-                 <button
-                    onClick={() => {
-                        setEditing(false);
-                        setForm({
-                            name: details.name || "",
-                            bio: details.bio || "",
-                            profilePic: details.profilePic || "",
-                            noOfPosts: details.noOfPosts || 0,
-                            followers: details.followers || 0,
-                        });
-                    }}
-                    className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition duration-150 ease-in-out"
-                 >
-                    Cancel
-                 </button>
+                <button
+                  onClick={handleUpdate}
+                  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition duration-150 ease-in-out"
+                >
+                  Save Changes
+                </button>
+                <button
+                  onClick={() => {
+                    setEditing(false);
+                    setForm({
+                      name: details.name || "",
+                      bio: details.bio || "",
+                      profilePic: details.profilePic || "",
+                      noOfPosts: details.noOfPosts || 0,
+                      followers: details.followers || 0,
+                    });
+                  }}
+                  className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition duration-150 ease-in-out"
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           ) : (
             <div className="space-y-2">
               <h2 className="text-2xl font-semibold">{details.name}</h2>
-              <p className="mt-1 text-gray-600">{details.bio || "No bio provided."}</p>
+              <p className="mt-1 text-gray-600">
+                {details.bio || "No bio provided."}
+              </p>
               <div className="mt-3 text-sm text-gray-500 space-x-4">
                 <span>
                   <strong>Posts:</strong> {details.noOfPosts}
@@ -194,14 +200,14 @@ const UserDetails = () => {
               <button
                 className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition duration-150 ease-in-out"
                 onClick={() => {
-                    setEditing(true);
-                    setForm({
-                         name: details.name || "",
-                         bio: details.bio || "",
-                         profilePic: details.profilePic || "",
-                         noOfPosts: details.noOfPosts || 0,
-                         followers: details.followers || 0,
-                     });
+                  setEditing(true);
+                  setForm({
+                    name: details.name || "",
+                    bio: details.bio || "",
+                    profilePic: details.profilePic || "",
+                    noOfPosts: details.noOfPosts || 0,
+                    followers: details.followers || 0,
+                  });
                 }}
               >
                 Edit Profile
