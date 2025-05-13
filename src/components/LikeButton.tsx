@@ -6,14 +6,21 @@ interface LikeButtonProps {
   userId: string; // Allow empty string as valid
 }
 
+// Define an interface for a single Like object
+interface Like {
+  _id?: string; // Optional: if your backend sends an ID for the like itself
+  userId: string;
+}
+
 interface LikeResponse {
-  likes: Array<any>;
+  likes: Like[]; // Use the Like interface
   liked: boolean;
+  message?: string; // Optional: if the toggle endpoint sends a message
 }
 
 const LikeButton: React.FC<LikeButtonProps> = ({ blogId, userId }) => {
   const [liked, setLiked] = useState(false);
-  const [likes, setLikes] = useState<LikeResponse["likes"]>([]);
+  const [likes, setLikes] = useState<Like[]>([]); // Use Like[] for state
 
   useEffect(() => {
     const fetchLikes = async () => {
@@ -26,9 +33,9 @@ const LikeButton: React.FC<LikeButtonProps> = ({ blogId, userId }) => {
 
         const contentType = res.headers.get("content-type");
         if (contentType && contentType.includes("application/json")) {
-          const data = await res.json();
+          const data: LikeResponse = await res.json(); // Type the data
           setLikes(data.likes || []); // Set likes if available
-          setLiked(data.likes.some((like: any) => like.userId === userId)); // Check if the current user has liked the post
+          setLiked(data.likes.some((like: Like) => like.userId === userId)); // Use Like type in callback
         } else {
           throw new Error("Response is not JSON.");
         }
@@ -49,9 +56,9 @@ const LikeButton: React.FC<LikeButtonProps> = ({ blogId, userId }) => {
       });
 
       if (res.ok) {
-        const result: LikeResponse = await res.json();
-        setLikes(result.likes); // Update likes
-        setLiked(result.liked); // Update liked state based on response
+        const data: LikeResponse = await res.json(); // Type the data
+        setLiked(data.liked);
+        setLikes(data.likes);
       } else {
         throw new Error(`Failed to toggle like. Status: ${res.status}`);
       }

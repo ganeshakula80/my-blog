@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Image from 'next/image'; // Import next/image
 
 interface Comment {
   _id: string;
@@ -62,11 +63,15 @@ const CommentSection: React.FC<CommentSectionProps> = ({ blogId, userId }) => {
         {comments.map((c) => (
           <div key={c._id} className="border p-3 rounded">
             <div className="flex items-center gap-2 mb-1">
-              <img
-                src={c.userId?.profilePic || "/default-profile.jpg"}
-                className="w-8 h-8 rounded-full"
-                alt="profile"
-              />
+              <div className="relative w-8 h-8 rounded-full overflow-hidden">
+                <Image
+                  src={c.userId?.profilePic || "/default-profile.jpg"} 
+                  fill
+                  sizes="32px"
+                  style={{ objectFit: "cover" }}
+                  alt={c.userId?.name || "Commenter profile picture"}
+                />
+              </div>
               <span className="font-medium">{c.userId?.name}</span>
               <span className="text-sm text-gray-500 ml-auto">
                 {new Date(c.createdAt).toLocaleDateString()}

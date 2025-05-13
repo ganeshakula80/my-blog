@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 type Blog = {
@@ -127,15 +128,15 @@ const Home = () => {
             {blogs.map((blog) => (
               <li key={blog._id} className="mt-4 border-b pb-4">
                 <div className="flex items-center">
-                  <img
-                    src={
-                      blog.author?.profilePic || "/path/to/default-profile.jpg"
-                    }
-                    alt="Profile Picture"
-                    className="w-12 h-12 rounded-full mr-4"
-                    width={48}
-                    height={48}
-                  />
+                  <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
+                    <Image
+                      src={blog.author?.profilePic || "/default-profile.png"}
+                      alt={blog.author?.name || "Author profile picture"}
+                      fill
+                      sizes="48px"
+                      style={{ objectFit: "cover" }}
+                    />
+                  </div>
                   <div>
                     <span className="font-semibold">
                       {blog.author?.name || "Anonymous"}

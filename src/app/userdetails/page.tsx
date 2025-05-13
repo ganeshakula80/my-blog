@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useUser } from "@/contexts/UserContexts";
 import axios from "axios";
+import Image from 'next/image';
 
 type UserDetails = {
   _id: string;
@@ -122,15 +123,13 @@ const UserDetails = () => {
       <h1 className="text-3xl font-bold mb-6 text-center">Your Profile</h1>
       <div className="bg-white shadow-md rounded-lg p-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
         <div className="flex-shrink-0">
-          <img
-            src={editing ? form.profilePic : details.profilePic}
-            alt="Profile"
-            className="w-32 h-32 rounded-full border-4 border-gray-200 object-cover"
+          <Image
+            src={(editing ? form.profilePic : details.profilePic) || "/default-profile.png"}
+            alt={details.name || "User profile picture"}
             width={128}
             height={128}
-            onError={(e) => {
-              e.currentTarget.src = "/images/default-profile-pic.jpg";
-            }}
+            className="rounded-full border-4 border-gray-200"
+            objectFit="cover"
           />
         </div>
         <div className="flex-1 text-center sm:text-left">

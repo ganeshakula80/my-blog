@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/contexts/UserContexts";
+import Image from "next/image";
 
 const CreateBlog = () => {
   const { user } = useUser();
@@ -54,13 +55,15 @@ const CreateBlog = () => {
 
       {user ? (
         <div className="flex items-center space-x-4 mb-6">
-          <img
-            src={user.profilePic || "/path/to/default-profile.jpg"}
-            alt="User Profile"
-            width={48}
-            height={48}
-            className="rounded-full border-2 border-blue-500"
-          />
+          <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-blue-500">
+            <Image
+              src={user?.profilePic || "/default-profile.png"}
+              alt={user.name || "User profile picture"}
+              fill
+              sizes="48px"
+              style={{ objectFit: "cover" }}
+            />
+          </div>
           <p className="text-xl font-semibold">{user.name}</p>
         </div>
       ) : (

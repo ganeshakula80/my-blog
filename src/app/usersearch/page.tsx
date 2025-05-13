@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useUser } from "@/contexts/UserContexts";
+import Image from 'next/image';
+// import { useUser } from "@/contexts/UserContexts"; // Commented out as it's unused
 
 interface User {
   _id: string;
@@ -13,24 +14,28 @@ interface User {
 }
 
 const UserSearchPage = () => {
-  const { user } = useUser();
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState<User[]>([]);
 
-  // Fetch users from backend
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/api/userdetails/search?search=${searchTerm}`
-      );
-      console.log(response.data);
-      setUsers(response.data.users || []);
-    } catch (error) {
-      console.error("Failed to fetch users:", error);
-    }
-  };
-
   useEffect(() => {
+    // Fetch users from backend
+    const fetchUsers = async () => {
+      if (!searchTerm.trim()) { // Optional: Avoid searching for empty strings
+        setUsers([]);
+        return;
+      }
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/userdetails/search?search=${searchTerm}`
+        );
+        console.log(response.data);
+        setUsers(response.data.users || []);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+        setUsers([]); // Clear users on error
+      }
+    };
+
     fetchUsers();
   }, [searchTerm]); // re-fetch when searchTerm changes
 
@@ -51,11 +56,15 @@ const UserSearchPage = () => {
         <ul className="space-y-4">
           {users.map((user) => (
             <li key={user._id} className="flex items-center space-x-4">
-              <img
-                src={user.profilePic}
-                alt={user.name}
-                className="w-12 h-12 rounded-full object-cover"
-              />
+              <div className="relative w-12 h-12 rounded-full overflow-hidden"> 
+                <Image
+                  src={user.profilePic || "/default-profile.png"}
+                  alt={user.name || "User profile picture"}
+                  fill
+                  sizes="48px"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
               <div>
                 <p className="font-semibold">{user.name}</p>
                 <p className="text-sm text-gray-600">{user.bio}</p>
